@@ -21,7 +21,7 @@ jobs:
       run: mvn -B package --file pom.xml
     
     - name: Generate package
-      run: zip -r ${{github.SHA}}.zip .
+      run: zip -r rest-${{ github.sha }}.zip . -x '*.git*'
       
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v13
@@ -30,6 +30,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: petclinic-rest
         environment_name: Petclinicrest-env
-        version_label: Sample Application
+        version_label: ${{ github.sha }}
         region: sa-east-1
-        deployment_package: ${{github.SHA}}.zip
+        deployment_package: rest-${{ github.sha }}.zip
